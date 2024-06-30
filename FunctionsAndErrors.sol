@@ -1,23 +1,23 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.1;
 
-contract GravityContract {
+contract ErrorHandlingExample {
 
-    uint public gravityForce = 10;
-    address public contractOwner;
+    uint public storedValue;
 
-    constructor() {
-        contractOwner = msg.sender;
+    function updateValue(uint _newValue) public {
+        require(_newValue > 1, "Value must be greater than 1");
+
+        assert(_newValue != storedValue);
+
+        storedValue = _newValue;   
     }
 
-    function calculateWeight(uint _mass) public view returns (uint) {
-        require(contractOwner == msg.sender, "Only the contract owner can call this function");
-        assert(_mass > 0);
-
-        if ((_mass * gravityForce) < 0) {
-            revert("Weight of the object cannot be zero or negative");
+    function multiplyValues(uint _firstNum, uint _secondNum) public pure returns (uint){
+        require(_firstNum != 0, "First Number cannot be zero");
+        if(_secondNum % 2 != 0){
+            revert("Second number must be an Even Number");
         }
-
-        return _mass * gravityForce;
+        return _firstNum * _secondNum;
     }
 }
